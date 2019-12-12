@@ -1,0 +1,21 @@
+pagedesigner:
+  js:
+    resources/js/init-effects.js: {minified: false}
+  css:
+    component:
+      resources/css/pagedesigner-effects.css: {minified: false}
+
+frontend:
+  js:
+    //cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/plugins/ScrollToPlugin.min.js: {minified: true, external: true}
+    //cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js: {minified: true, external: true}
+    //cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js: {minified: true, external: true}
+    //cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js: {minified: true, external: true}
+    //cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.js: {minified: false, external: true}
+    //cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/jquery.ScrollMagic.min.js: {minified: true, external: true}
+    resources/js/effects.js: {minified: false}
+
+  css:
+    component:
+      vendor/animate/animate.css: {minified: false, external: true}
+      resources/css/effects.css: {minified: false}
