@@ -100,9 +100,90 @@ class PagedesignerEffectHandler {
           pagedeisnger_effect_handler.init();
 
         });
-
       });
 
+      $(document).on('pagedesigner-init-components', function (e, editor, options) {
+         
+
+
+
+        editor.DomComponents.addType('component', {
+          extend: 'component',
+          model: {
+            serialize() {
+              var styles = {};
+              if (this.get('entityId')) {
+                var selector = editor.SelectorManager.get('#pd-cp-' + this.get('entityId'));
+                if (selector) {
+                  editor.DeviceManager.getAll().forEach(function (device) {
+                    var style = false;
+                    if (device.get('widthMedia').length > 0) {
+                      style = editor.CssComposer.get(selector, null, '(max-width: ' + device.get('widthMedia') + ')')
+                    } else {
+                      style = editor.CssComposer.get(selector);
+                    }
+                    if (style) {
+                      styles[device.get('key')] = style.styleToString();
+                    }
+                  });
+                }
+              }
+      
+              var component_data = {
+                fields: this.attributes.attributes,
+                styles: styles,
+                classes: this.getClasses()
+              };
+
+              if ( this.attributes.effects ){
+                component_data.effects = this.attributes.effects;
+              }
+
+              return component_data;
+            }
+          }
+        })
+
+
+
+        editor.DomComponents.addType('row', {
+          extend: 'row',
+          model: {
+            serialize() {
+              var styles = {};
+              if (this.get('entityId')) {
+                var selector = editor.SelectorManager.get('#pd-cp-' + this.get('entityId'));
+                if (selector) {
+                  editor.DeviceManager.getAll().forEach(function (device) {
+                    var style = false;
+                    if (device.get('widthMedia').length > 0) {
+                      style = editor.CssComposer.get(selector, null, '(max-width: ' + device.get('widthMedia') + ')')
+                    } else {
+                      style = editor.CssComposer.get(selector);
+                    }
+                    if (style) {
+                      styles[device.get('key')] = style.styleToString();
+                    }
+                  });
+                }
+              }
+      
+              var component_data = {
+                fields: this.attributes.attributes,
+                styles: styles,
+                classes: this.getClasses()
+              };
+
+              if ( this.attributes.effects ){
+                component_data.effects = this.attributes.effects;
+              }
+
+              return component_data;
+
+            }
+          }
+        });
+      });
     }
   };
 })(jQuery, Drupal);
