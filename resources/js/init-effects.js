@@ -49,7 +49,7 @@ class PagedesignerEffectHandler {
     var markup = '<select class="add-effect"><option value="">' + Drupal.t('Add effect / animation') + '</option>';
     Object.keys(this.events).forEach( element =>{
       markup += '<option value="' + element + '">' + element + '</option>';
-    })
+    });
     var btn = this.jQuery(markup);
 
     btn.on('change', function () {
@@ -80,7 +80,58 @@ class PagedesignerEffectHandler {
   }
 
   formEditEffect(effect){
-    console.log( this.events[effect.event].fields )
+    var effect_form = $('<div class="edit-effect"></div>');
+    effect_form.append('<p><strong>' + effect.event + '</strong></p>');
+    self = this;
+    Object.keys(this.events[effect.event].fields).forEach( field =>{
+      effect_form.append(self.editEffectField(effect, field));
+    });
+
+    $('[data-effects-container]').append(effect_form);
+
+  }
+
+
+  
+  editEffectField(effect, field){
+    var field_holder = $('<label></label>');
+    field_holder.append('<p>' + this.events[effect.event].fields[field].label + '</p>' ) ;
+
+    switch(this.events[effect.event].fields[field].type){
+      case 'text':
+        var input_element = $('<input type="text" />');
+        break;
+
+      case 'select':
+        var input_element = $('<select></select>');
+        self = this;
+        Object.keys(self.events[effect.event].fields[field].options).forEach( optgoup =>{
+
+          if( typeof self.events[effect.event].fields[field].options[optgoup] == 'string' ){
+            input_element.append('<option value"' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
+          }else{
+            var group = $('<optgroup label="' + optgoup + '"></optgroup> ');
+          
+            Object.keys(self.events[effect.event].fields[field].options[optgoup]).forEach( option =>{
+              group.append('<option value"' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>')
+            });
+            input_element.append(group);
+  
+          }
+        });
+     
+        break;
+    }
+
+    input_element.on('change', function(){
+      effect[field] = $(this).val()
+    });
+
+    field_holder.append(input_element);
+
+    return field_holder;
+
+
   }
 
 }
