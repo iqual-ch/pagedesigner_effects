@@ -36,4 +36,17 @@
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #eee;
+  position: relative;
+}
+
+.gjs-clm-effects .edit-effect .btn-remove-effect{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.gjs-clm-effects .edit-effect .btn-remove-effect:hover{
+  opacity: 1;
 }
