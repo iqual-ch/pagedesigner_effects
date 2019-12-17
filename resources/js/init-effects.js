@@ -214,7 +214,52 @@ class PagedesignerEffectHandler {
               }
 
               return component_data;
+            },
+
+            handleLoadResponse(response) {
+              this.setAttributes(Object.assign({}, this.getAttributes(), response['fields']));
+              if (response['classes']) {
+                this.addClass(response['classes']);
+              }
+
+              if( response['effects'] ){
+                this.attributes.effects = response['effects'];
+              }
+              this.set('previousVersion', Object.assign({},this.serialize()));
+              this.set('changed', false);
+            },
+
+            restore() {
+
+              // needs some love
+              var previousData = this.get('previousVersion');
+              this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
+              this.removeClass(this.getClasses());
+
+              if( previousData['effects'] ){
+                this.attributes.effects = previousData['effects'];
+              }
+
+              if (previousData['classes']) {
+                this.addClass(previousData['classes']);
+              }
+
+              for (var media in previousData['styles']) {
+                if (media == 'large') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style)
+                }
+                if (media == 'medium') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 992px)" })
+                }
+                if (media == 'small') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 768px)" })
+                }
+              }
+              this.set('changed', false);
             }
+
+
+
           }
         })
 
@@ -263,22 +308,8 @@ class PagedesignerEffectHandler {
               if( response['effects'] ){
                 this.attributes.effects = response['effects'];
               }
-
-              // debug / testing
-              if( !this.attributes.effects ){
-                this.attributes.effects = [{
-                  'event': 'mouseenter',
-                  'effect': 'flash'
-                }];
-              }
               this.set('previousVersion', Object.assign({},this.serialize()));
               this.set('changed', false);
-            },
-
-            handleSaveResponse() {
-              // do stuff with response from saving
-              this.set('previousVersion', Object.assign({},this.serialize()));
-
             },
 
             restore() {

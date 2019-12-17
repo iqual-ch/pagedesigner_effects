@@ -51,8 +51,6 @@
     //     // '#main' : [
     //     //   {'event':'scroll','target':'#main','offset':0,'y_start':'0','y_end':'100%', 'duration': 'trigger_height' }]
 
-
-
     // }
 
 
@@ -109,7 +107,7 @@
             case 'scrollleavebottom':
             case 'scrollenterbottom':
               var scene = new ScrollMagic.Scene({ triggerElement: trigger });
-              scene.addIndicators();
+//              scene.addIndicators();
 
               var duration = 1;
 
@@ -355,7 +353,7 @@
                 offset: offset,
                 triggerHook: 1
               })
-              .addIndicators()
+//              .addIndicators()
               .setTween(TL)
               .addTo(animationController);
 
