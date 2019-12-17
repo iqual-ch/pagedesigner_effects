@@ -42,6 +42,15 @@ class PagedesignerEffectHandler {
       effect_container.prepend( $('<p class="sidebar-subtitle">' + Drupal.t('Effects / Anmations') + '</p>') );
       effect_container.insertBefore('.gjs-clm-tags');
     }
+
+    $('[data-effects-container]').html('');
+
+    self = this;
+    if(this.component.attributes.effects){
+      this.component.attributes.effects.forEach(function(effect){
+        self.formEditEffect(effect);
+      });
+    }
   }
 
   btnAddEvent(){
@@ -70,26 +79,27 @@ class PagedesignerEffectHandler {
     };
     this.formEditEffect(effect);
     this.component.attributes.effects.push(effect);
+    this.component.set('changed', true);
   }
 
   formEditEffect(effect){
+    var component = this.component;
+    self = this;
+
     var effect_form = $('<div class="edit-effect"></div>');
     effect_form.append('<p><strong>' + effect.event + '</strong></p>');
 
     var btn_remove_effect = $('<a class="btn-remove-effect"><i class="fas fa-times"></i></a>');
     effect_form.append(btn_remove_effect);
 
-    self = this;
-    btn_remove_effect.on('click', function(){
-//      delete effect;
-      self.component.attributes.effects.splice( self.component.attributes.effects.indexOf(effect), 1 );
 
+    btn_remove_effect.on('click', function(){
+      component.attributes.effects.splice( component.attributes.effects.indexOf(effect), 1 );
       effect_form.remove();
+      component.set('changed', true);
     });
 
-
     effect_form.append('<p><a>' + effect.event + '</strong></p>');
-    self = this;
     Object.keys(this.events[effect.event].fields).forEach( field =>{
       effect_form.append(self.editEffectField(effect, field));
     });
@@ -100,12 +110,17 @@ class PagedesignerEffectHandler {
 
 
   editEffectField(effect, field){
+    var component = this.component;
+
     var field_holder = $('<label></label>');
     field_holder.append('<p>' + this.events[effect.event].fields[field].label + '</p>' ) ;
 
     switch(this.events[effect.event].fields[field].type){
       case 'text':
         var input_element = $('<input type="text" />');
+        if(effect[field]){
+          input_element.val(effect[field]);
+        }
         break;
 
       case 'select':
@@ -119,7 +134,11 @@ class PagedesignerEffectHandler {
             var group = $('<optgroup label="' + optgoup + '"></optgroup> ');
 
             Object.keys(self.events[effect.event].fields[field].options[optgoup]).forEach( option =>{
-              group.append('<option value"' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>')
+              var option_element = $('<option value"' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>');
+              if( effect[field] &&  effect[field] == option  ){
+                option_element.attr('selected', 'selected')
+              }
+              group.append(option_element)
             });
             input_element.append(group);
 
@@ -130,7 +149,8 @@ class PagedesignerEffectHandler {
     }
 
     input_element.on('change', function(){
-      effect[field] = $(this).val()
+      effect[field] = $(this).val();
+      component.set('changed', true);
     });
 
     field_holder.append(input_element);
@@ -152,17 +172,14 @@ class PagedesignerEffectHandler {
   Drupal.behaviors.pagedesigner_init_component_effects = {
     attach: function (context, settings) {
       $(document).on('pagedesigner-after-init', function (e, editor, options) {
-        editor.on('component:selected', (component, sender) => {
+        editor.on('run:edit-component', (component, sender) => {
           var pagedeisnger_effect_handler = new PagedesignerEffectHandler(editor, jQuery, drupalSettings.pagedesigner_effects);
-          pagedeisnger_effect_handler.init(component);
+          pagedeisnger_effect_handler.init(editor.getSelected());
 
         });
       });
 
       $(document).on('pagedesigner-init-components', function (e, editor, options) {
-
-
-
 
         editor.DomComponents.addType('component', {
           extend: 'component',
@@ -193,15 +210,13 @@ class PagedesignerEffectHandler {
               };
 
               if ( this.attributes.effects ){
-                component_data.effects = this.attributes.effects;
+                component_data.effects = [...this.attributes.effects ];
               }
 
               return component_data;
             }
           }
         })
-
-
 
         editor.DomComponents.addType('row', {
           extend: 'row',
@@ -232,12 +247,69 @@ class PagedesignerEffectHandler {
               };
 
               if ( this.attributes.effects ){
-                component_data.effects = this.attributes.effects;
+                component_data.effects = [...this.attributes.effects ];
               }
 
               return component_data;
 
-            }
+            },
+
+            handleLoadResponse(response) {
+              this.setAttributes(Object.assign({}, this.getAttributes(), response['fields']));
+              if (response['classes']) {
+                this.addClass(response['classes']);
+              }
+
+              if( response['effects'] ){
+                this.attributes.effects = response['effects'];
+              }
+
+              // debug / testing
+              if( !this.attributes.effects ){
+                this.attributes.effects = [{
+                  'event': 'mouseenter',
+                  'effect': 'flash'
+                }];
+              }
+              this.set('previousVersion', Object.assign({},this.serialize()));
+              this.set('changed', false);
+            },
+
+            handleSaveResponse() {
+              // do stuff with response from saving
+              this.set('previousVersion', Object.assign({},this.serialize()));
+
+            },
+
+            restore() {
+
+              // needs some love
+              var previousData = this.get('previousVersion');
+              this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
+              this.removeClass(this.getClasses());
+
+              if( previousData['effects'] ){
+                this.attributes.effects = previousData['effects'];
+              }
+
+              if (previousData['classes']) {
+                this.addClass(previousData['classes']);
+              }
+
+              for (var media in previousData['styles']) {
+                if (media == 'large') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style)
+                }
+                if (media == 'medium') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 992px)" })
+                }
+                if (media == 'small') {
+                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 768px)" })
+                }
+              }
+              this.set('changed', false);
+            },
+
           }
         });
       });
