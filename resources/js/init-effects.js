@@ -24,8 +24,11 @@ class PagedesignerEffectHandler {
     var events = [];
     var effects = this.settings.effects;
     Object.keys(effects.categories).forEach(category=>{
-      effects.categories[category].events.forEach( element =>{
+      //effects.categories[category].events.forEach( element =>{
+
+      Object.keys(effects.categories[category].events).forEach(element=>{
         events[element] = {
+          'label' : effects.categories[category].events[element],
           'event' : element,
           'fields' : effects.categories[category].fields
         };
@@ -57,7 +60,7 @@ class PagedesignerEffectHandler {
     self = this;
     var markup = '<select class="add-effect"><option value="">' + Drupal.t('Add effect / animation') + '</option>';
     Object.keys(this.events).forEach( element =>{
-      markup += '<option value="' + element + '">' + element + '</option>';
+      markup += '<option value="' + element + '">' + this.events[element].label + '</option>';
     });
     var btn = this.jQuery(markup);
 

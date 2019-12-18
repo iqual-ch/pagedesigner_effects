@@ -27,9 +27,11 @@ function pagedesigner_effects_help($route_name, RouteMatchInterface $route_match
 function pagedesigner_effects_page_attachments(array &$page)
 {
     if (isset($_GET['pd'])) {
-        $config = \Drupal::config('pagedesigner_effects.settings');
-        $page['#attached']['drupalSettings']['pagedesigner_effects']['effects'] = $config->get('enable_effects');
-        $page['#attached']['library'][] = 'pagedesigner_effects/pagedesigner';
+        if (\Drupal::currentUser()->hasPermission('pd_effect_use')) {
+            $config = \Drupal::config('pagedesigner_effects.settings');
+            $page['#attached']['drupalSettings']['pagedesigner_effects']['effects'] = $config->get('enable_effects');
+            $page['#attached']['library'][] = 'pagedesigner_effects/pagedesigner';
+        }
     }else{
         $page['#attached']['library'][] = 'pagedesigner_effects/frontend';
     }
