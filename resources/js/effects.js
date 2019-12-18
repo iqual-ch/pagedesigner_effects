@@ -364,11 +364,29 @@
               break;
 
 
+              case 'pin':
+                var duration = 0;
+                switch(effect.duration){
+                  case 'trigger_height':
+                    duration = $(trigger).height();
+                    break;
+                  case 'trigger_leave':
+                    duration = '100%';
+                    break;
+                  case 'trigger_left':
+                    duration = $(window).height() + $(trigger).height();
+                    break;
+                }
 
+                var scene = new ScrollMagic.Scene({
+                  triggerElement: trigger,
+                  duration: duration
+                })
+                .setPin(target)
+                .addIndicators() // add indicators (requires plugin)
+                .addTo(animationController);
 
-            case 'scrollup':
-            case 'scrolldown':
-              break;
+                break;
 
           }
 
