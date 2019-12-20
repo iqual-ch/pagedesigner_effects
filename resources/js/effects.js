@@ -383,7 +383,7 @@
                   duration: duration
                 })
                 .setPin(target)
-                .addIndicators() // add indicators (requires plugin)
+//                .addIndicators() // add indicators (requires plugin)
                 .addTo(animationController);
 
                 break;

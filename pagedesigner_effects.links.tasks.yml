@@ -1,5 +1,4 @@
 pagedesigner.effect_settings:
-  title: 'Pagedesigner effects'
-  route_name: pagedesigner_effects.settings
-  base_route: pagedesigner.settings
-  description: 'Configure Pagedesigner effect settings.'
+  title: 'Effect settings'
+  route_name: pagedesigner.effect_settings
+  base_route: pagedesigner.admin

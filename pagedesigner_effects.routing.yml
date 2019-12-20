@@ -1,5 +1,5 @@
-pagedesigner_effects.settings:
-  path: 'admin/config/pagedesigner/pagedesinger_effects'
+pagedesigner.effect_settings:
+  path: 'admin/config/pagedesigner/effects'
   defaults:
     _form:  '\Drupal\pagedesigner_effects\Form\PagedesignerEffectSettingsForm'
     _title: 'Pagedesigner Effects Settings'

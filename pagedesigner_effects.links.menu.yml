@@ -1,6 +1,6 @@
 pagedesigner.effect_settings:
   title: 'Pagedesigner effects'
-  route_name: pagedesigner_effects.settings
+  route_name: pagedesigner.effect_settings
   description: 'Configure Pagedesigner effect settings.'
   parent: pagedesigner.admin
   weight: 200
