@@ -13,7 +13,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function pagedesigner_effects_help($route_name, RouteMatchInterface $route_match)
 {
     switch ($route_name) {
-            // Main module help for the pagedesigner_effects module.
+        // Main module help for the pagedesigner_effects module.
         case 'help.page.pagedesigner_effects':
             $output = '';
             $output .= '<h3>' . t('About') . '</h3>';
@@ -26,13 +26,5 @@ function pagedesigner_effects_help($route_name, RouteMatchInterface $route_match
 
 function pagedesigner_effects_page_attachments(array &$page)
 {
-    if (isset($_GET['pd'])) {
-        if (\Drupal::currentUser()->hasPermission('pd_effect_use')) {
-            $config = \Drupal::config('pagedesigner_effects.settings');
-            $page['#attached']['drupalSettings']['pagedesigner_effects']['effects'] = $config->get('enable_effects');
-            $page['#attached']['library'][] = 'pagedesigner_effects/pagedesigner';
-        }
-    }else{
-        $page['#attached']['library'][] = 'pagedesigner_effects/frontend';
-    }
+    $page['#attached']['library'][] = 'pagedesigner_effects/frontend';
 }
