@@ -1,11 +1,16 @@
 <?php
+
 namespace Drupal\pagedesigner_effects\Form;
+
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\Yaml\Yaml;
 
-
+/**
+ * Add the pagedesigner effects settings form.
+ */
 class PagedesignerEffectSettingsForm extends ConfigFormBase {
+
   /**
    * {@inheritdoc}
    */
@@ -14,12 +19,14 @@ class PagedesignerEffectSettingsForm extends ConfigFormBase {
       'pagedesigner_effects.settings',
     ];
   }
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'pagedesigner_effects_settings_form';
   }
+
   /**
    * {@inheritdoc}
    */
@@ -27,21 +34,23 @@ class PagedesignerEffectSettingsForm extends ConfigFormBase {
     parent::buildForm($form, $form_state);
     $config = $this->config('pagedesigner_effects.settings');
 
-    $form['enable_effects'] = array(
+    $form['enable_effects'] = [
       '#type' => 'textarea',
-      '#title' => t('Enable events and effects'),
-      '#default_value' => \Drupal\Component\Serialization\Yaml::encode($config->get('enable_effects')),
-    );
+      '#title' => $this->t('Enable events and effects'),
+      '#default_value' => Yaml::decode($config->get('enable_effects')),
+    ];
 
     return parent::buildForm($form, $form_state);
 
   }
+
   /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
   }
+
   /**
    * {@inheritdoc}
    */
@@ -49,7 +58,8 @@ class PagedesignerEffectSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $config = $this->config('pagedesigner_effects.settings');
-    $config->set('enable_effects', Yaml::parse($form_state->getValue('enable_effects')));
+    $config->set('enable_effects', Yaml::encode($form_state->getValue('enable_effects')));
     $config->save();
   }
+
 }
