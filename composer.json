@@ -1,0 +1,18 @@
+{
+  "name": "iqual/pagedesigner_effects",
+  "description": "An effect extension for the pagedesigner contrib module.",
+  "type": "drupal-module",
+  "keywords": [
+    "Drupal",
+    "Editing"
+  ],
+  "homepage": "https://github.com/iqual-ch/pagedesigner_effects",
+  "support": {
+    "issues": "https://github.com/iqual-ch/pagedesigner_effects/issues",
+    "source": "https://github.com/iqual-ch/pagedesigner_effects"
+  },
+  "license": "GPL-2.0+",
+  "require": {
+    "drupal/pagedesigner": "*"
+  }
+}
