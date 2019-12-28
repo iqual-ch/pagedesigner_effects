@@ -7,59 +7,15 @@
 
   Drupal.behaviors.pagedesigner_effects = {
     attach: function (context, settings) {
-
-      // drupalSettings.pagedesigner.effects = {
-      //   '#pd-cp-6014' : [
-      //     {'event':'scrollentertop','target':null,'offset':0,'effect':'animated slideInLeft','state_before':'hide','state_after':'show'},
-      //     {'event':'scrollleavetop','target':null,'offset':0,'effect':'animated slideOutLeft','state_after':'hide'},
-      //     {'event':'scrollleavebottom','target':null,'offset':0,'effect':'animated slideOutRight','state_after':'hide'},
-      //     {'event':'scrollenterbottom','target':null,'offset':0,'effect':'animated slideInRight','state_after':'hide','state_after':'show'}],
-      //   // '#pd-cp-2460' : [
-      //   //   {'event':'scrollentertop','target':null,'offset':0,'effect':'animated wobble'}],
-      //   '#pd-cp-2575' : [
-      //     {'event':'scrollleavetop','target':'#pd-cp-2542','offset':0,'effect':'animated hinge'}],
-      //   '#pd-cp-2533' : [
-      //     {'event':'scrollleavebottom','target':null,'offset':0,'effect':'animated shake'}],
-      //   '#pd-cp-2581' : [
-      //     {'event':'scrollenterbottom','target':null,'offset':0,'effect':'animated heartBeat'}],
-      //   '#pd-cp-6030' : [
-      //     {'event':'mouseenter','target':null,'offset':0,'effect':'animated heartBeat'},
-      //     {'event':'mouseleave','target':'body','offset':0,'effect':'animated heartBeat'}],
-      //   '#pd-cp-6045' : [
-      //     {'event':'mousehover','target':null,'offset':0,'effect':'pd-hover-grow'}],
-
-      //   '#pd-cp-2542' : [
-      //     {'event':'scroll','target':null,'offset':0,'x_start':'-50%','x_end':'0','y_start':'50%','y_end':'0', 'duration': 'trigger_height', 'offset': 50 }],
-
-
-      //     '#pd-cp-2533' : [
-      //       {'event':'scroll','target':'#pd-cp-2550','offset':0,'x_start':'100%','x_end':'-100%', 'duration': 'trigger_left' }],
-
-      //     '#pd-cp-2533' : [
-      //       {'event':'scroll','target':'#pd-cp-2550','offset':0,'x_start':'100%','x_end':'-100%', 'duration': 'trigger_height' }],
-
-
-      //     '#pd-cp-6059' : [
-      //       {'event':'scroll','target':'#pd-cp-2463','offset':0,'y_start':'-300%','y_end':0, 'duration': 'trigger_left' },
-      //       {'event':'scroll','target':'#pd-cp-2464','offset':0,'y_start':'-240%','y_end':0, 'duration': 'trigger_left' },
-      //       {'event':'scroll','target':'#pd-cp-2465','offset':0,'y_start':'-280%','y_end':0, 'duration': 'trigger_left' },
-      //       {'event':'scroll','target':'#pd-cp-2466','offset':0,'y_start':'-240%','y_end':0, 'duration': 'trigger_left' },
-      //       {'event':'scroll','target':'#pd-cp-2467','offset':0,'y_start':'-320%','y_end':0, 'duration': 'trigger_left' },
-      //       {'event':'scroll','target':'#pd-cp-2468','offset':0,'y_start':'-200%','y_end':0, 'duration': 'trigger_left' }],
-
-      //     // '#main' : [
-      //     //   {'event':'scroll','target':'#main','offset':0,'y_start':'0','y_end':'100%', 'duration': 'trigger_height' }]
-
-      // }
-
-
-
       window.animationController = new ScrollMagic.Controller();
 
       if (drupalSettings && drupalSettings.pagedesigner && drupalSettings.pagedesigner.effects) {
         Object.keys(drupalSettings.pagedesigner.effects).forEach(function (trigger) {
 
           var effects = drupalSettings.pagedesigner.effects[trigger];
+          if (!effects) {
+            return;
+          }
           effects.forEach(function (effect) {
 
             // get target

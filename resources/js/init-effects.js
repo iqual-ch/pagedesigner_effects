@@ -20,46 +20,48 @@ class PagedesignerEffectHandler {
 
   }
 
-  loadEvents(){
-    var events = [];
+  loadEvents() {
+    var events = {};
     var effects = this.settings.effects;
-    Object.keys(effects.categories).forEach(category=>{
-      //effects.categories[category].events.forEach( element =>{
+    if (effects && typeof effects == 'object') {
+      Object.keys(effects.categories).forEach(category => {
+        //effects.categories[category].events.forEach( element =>{
 
-      Object.keys(effects.categories[category].events).forEach(element=>{
-        events[element] = {
-          'label' : effects.categories[category].events[element],
-          'event' : element,
-          'fields' : effects.categories[category].fields
-        };
-      })
-    });
+        Object.keys(effects.categories[category].events).forEach(element => {
+          events[element] = {
+            'label': effects.categories[category].events[element],
+            'event': element,
+            'fields': effects.categories[category].fields
+          };
+        })
+      });
+    }
     return events;
   }
 
-  init(component){
+  init(component) {
     this.component = component;
     if ($('.gjs-clm-effects').length == 0) {
-      var effect_container =  $('<div class="gjs-clm-effects gjs-one-bg gjs-two-color" ><div data-effects-container></div></div>');
-      effect_container.prepend( this.btnAddEvent() );
-      effect_container.prepend( $('<p class="sidebar-subtitle">' + Drupal.t('Effects / Anmations') + '</p>') );
+      var effect_container = $('<div class="gjs-clm-effects gjs-one-bg gjs-two-color" ><div data-effects-container></div></div>');
+      effect_container.prepend(this.btnAddEvent());
+      effect_container.prepend($('<p class="sidebar-subtitle">' + Drupal.t('Effects / Anmations') + '</p>'));
       effect_container.insertBefore('.gjs-clm-tags');
     }
 
     $('[data-effects-container]').html('');
 
     self = this;
-    if(this.component.attributes.effects){
-      this.component.attributes.effects.forEach(function(effect){
+    if (this.component.attributes.effects) {
+      this.component.attributes.effects.forEach(function (effect) {
         self.formEditEffect(effect);
       });
     }
   }
 
-  btnAddEvent(){
+  btnAddEvent() {
     self = this;
     var markup = '<select class="add-effect"><option value="">' + Drupal.t('Add effect / animation') + '</option>';
-    Object.keys(this.events).forEach( element =>{
+    Object.keys(this.events).forEach(element => {
       markup += '<option value="' + element + '">' + this.events[element].label + '</option>';
     });
     var btn = this.jQuery(markup);
@@ -73,19 +75,19 @@ class PagedesignerEffectHandler {
     return btn;
   }
 
-  addEffect(event){
-    if( !this.component.attributes.effects ){
+  addEffect(event) {
+    if (!this.component.attributes.effects) {
       this.component.attributes.effects = [];
     }
     var effect = {
-      'event' : event
+      'event': event
     };
     this.formEditEffect(effect);
     this.component.attributes.effects.push(effect);
     this.component.set('changed', true);
   }
 
-  formEditEffect(effect){
+  formEditEffect(effect) {
     var component = this.component;
     self = this;
 
@@ -96,14 +98,14 @@ class PagedesignerEffectHandler {
     effect_form.append(btn_remove_effect);
 
 
-    btn_remove_effect.on('click', function(){
-      component.attributes.effects.splice( component.attributes.effects.indexOf(effect), 1 );
+    btn_remove_effect.on('click', function () {
+      component.attributes.effects.splice(component.attributes.effects.indexOf(effect), 1);
       effect_form.remove();
       component.set('changed', true);
     });
 
     effect_form.append('<p><a>' + effect.event + '</strong></p>');
-    Object.keys(this.events[effect.event].fields).forEach( field =>{
+    Object.keys(this.events[effect.event].fields).forEach(field => {
       effect_form.append(self.editEffectField(effect, field));
     });
 
@@ -112,16 +114,16 @@ class PagedesignerEffectHandler {
 
 
 
-  editEffectField(effect, field){
+  editEffectField(effect, field) {
     var component = this.component;
 
     var field_holder = $('<label></label>');
-    field_holder.append('<p>' + this.events[effect.event].fields[field].label + '</p>' ) ;
+    field_holder.append('<p>' + this.events[effect.event].fields[field].label + '</p>');
 
-    switch(this.events[effect.event].fields[field].type){
+    switch (this.events[effect.event].fields[field].type) {
       case 'text':
         var input_element = $('<input type="text" />');
-        if(effect[field]){
+        if (effect[field]) {
           input_element.val(effect[field]);
         }
         break;
@@ -129,16 +131,16 @@ class PagedesignerEffectHandler {
       case 'select':
         var input_element = $('<select></select>');
         self = this;
-        Object.keys(self.events[effect.event].fields[field].options).forEach( optgoup =>{
+        Object.keys(self.events[effect.event].fields[field].options).forEach(optgoup => {
 
-          if( typeof self.events[effect.event].fields[field].options[optgoup] == 'string' ){
+          if (typeof self.events[effect.event].fields[field].options[optgoup] == 'string') {
             input_element.append('<option value"' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
-          }else{
+          } else {
             var group = $('<optgroup label="' + optgoup + '"></optgroup> ');
 
-            Object.keys(self.events[effect.event].fields[field].options[optgoup]).forEach( option =>{
+            Object.keys(self.events[effect.event].fields[field].options[optgoup]).forEach(option => {
               var option_element = $('<option value"' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>');
-              if( effect[field] &&  effect[field] == option  ){
+              if (effect[field] && effect[field] == option) {
                 option_element.attr('selected', 'selected')
               }
               group.append(option_element)
@@ -151,7 +153,7 @@ class PagedesignerEffectHandler {
         break;
     }
 
-    input_element.on('change', function(){
+    input_element.on('change', function () {
       effect[field] = $(this).val();
       component.set('changed', true);
     });
@@ -176,9 +178,10 @@ class PagedesignerEffectHandler {
     attach: function (context, settings) {
       $(document).on('pagedesigner-after-init', function (e, editor, options) {
         editor.on('run:edit-component', (component, sender) => {
-          var pagedeisnger_effect_handler = new PagedesignerEffectHandler(editor, jQuery, drupalSettings.pagedesigner_effects);
-          pagedeisnger_effect_handler.init(editor.getSelected());
-
+          if (drupalSettings && typeof drupalSettings.pagedesigner_effects != 'undefined') {
+            var pagedesinger_effect_handler = new PagedesignerEffectHandler(editor, jQuery, drupalSettings.pagedesigner_effects);
+            pagedesinger_effect_handler.init(editor.getSelected());
+          }
         });
       });
 
@@ -212,8 +215,8 @@ class PagedesignerEffectHandler {
                 classes: this.getClasses()
               };
 
-              if ( this.attributes.effects ){
-                component_data.effects = [...this.attributes.effects ];
+              if (this.attributes.effects) {
+                component_data.effects = [...this.attributes.effects];
               }
 
               return component_data;
@@ -225,10 +228,10 @@ class PagedesignerEffectHandler {
                 this.addClass(response['classes']);
               }
 
-              if( response['effects'] ){
+              if (response['effects']) {
                 this.attributes.effects = response['effects'];
               }
-              this.set('previousVersion', Object.assign({},this.serialize()));
+              this.set('previousVersion', Object.assign({}, this.serialize()));
               this.set('changed', false);
             },
 
@@ -239,7 +242,7 @@ class PagedesignerEffectHandler {
               this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
               this.removeClass(this.getClasses());
 
-              if( previousData['effects'] ){
+              if (previousData['effects']) {
                 this.attributes.effects = previousData['effects'];
               }
 
@@ -294,8 +297,8 @@ class PagedesignerEffectHandler {
                 classes: this.getClasses()
               };
 
-              if ( this.attributes.effects ){
-                component_data.effects = [...this.attributes.effects ];
+              if (this.attributes.effects) {
+                component_data.effects = [...this.attributes.effects];
               }
 
               return component_data;
@@ -308,10 +311,10 @@ class PagedesignerEffectHandler {
                 this.addClass(response['classes']);
               }
 
-              if( response['effects'] ){
+              if (response['effects']) {
                 this.attributes.effects = response['effects'];
               }
-              this.set('previousVersion', Object.assign({},this.serialize()));
+              this.set('previousVersion', Object.assign({}, this.serialize()));
               this.set('changed', false);
             },
 
@@ -322,7 +325,7 @@ class PagedesignerEffectHandler {
               this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
               this.removeClass(this.getClasses());
 
-              if( previousData['effects'] ){
+              if (previousData['effects']) {
                 this.attributes.effects = previousData['effects'];
               }
 
