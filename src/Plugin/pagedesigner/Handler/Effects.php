@@ -4,6 +4,8 @@ namespace Drupal\pagedesigner_effects\Plugin\pagedesigner\Handler;
 
 use Drupal\pagedesigner\Entity\Element;
 use Drupal\pagedesigner\Plugin\CompoundHandlerBase;
+use Symfony\Component\Yaml\Yaml as YamlParser;
+use Drupal\Component\Serialization\Yaml as YamlSerializer;
 
 /**
  * Add effects functionality to "row" and "component" patterns.
@@ -26,7 +28,7 @@ class Effects extends CompoundHandlerBase {
   public function collectAttachments(&$attachments) {
     if (\Drupal::currentUser()->hasPermission('pd_effect_use')) {
       $config = \Drupal::config('pagedesigner_effects.settings');
-      $attachments['drupalSettings']['pagedesigner_effects']['effects'] = $config->get('enable_effects');
+      $attachments['drupalSettings']['pagedesigner_effects']['effects'] = YamlParser::parse(YamlSerializer::decode($config->get('enable_effects')));
       $attachments['library'][] = 'pagedesigner_effects/pagedesigner';
     }
   }
@@ -35,7 +37,12 @@ class Effects extends CompoundHandlerBase {
    * {@inheritDoc}
    */
   public function serialize(Element $entity, &$result = []) {
-    $result['effects'] = json_decode($entity->field_effects->value, TRUE);
+    if (!$entity->field_effects->isEmpty()) {
+      $result['effects'] = json_decode($entity->field_effects->value, TRUE);
+    }
+    else {
+      $result['effects'] = [];
+    }
   }
 
   /**
