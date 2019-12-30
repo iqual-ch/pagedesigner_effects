@@ -5,6 +5,7 @@ namespace Drupal\pagedesigner_effects\Form;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Serialization\Exception\InvalidDataTypeException;
 
 /**
  * Add the pagedesigner effects settings form.
@@ -39,16 +40,22 @@ class PagedesignerEffectSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Enable events and effects'),
       '#default_value' => Yaml::decode($config->get('enable_effects')),
     ];
-
     return parent::buildForm($form, $form_state);
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
+    try {
+      Yaml::encode($form_state->getValue('enable_effects'));
+    }
+    catch (InvalidDataTypeException $e) {
+      $form_state->setErrorByName(
+        'enable_effects',
+        $this->t('The provided configuration is not a valid yaml text.')
+      );
+    }
   }
 
   /**
