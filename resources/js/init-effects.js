@@ -134,12 +134,12 @@ class PagedesignerEffectHandler {
         Object.keys(self.events[effect.event].fields[field].options).forEach(optgoup => {
 
           if (typeof self.events[effect.event].fields[field].options[optgoup] == 'string') {
-            input_element.append('<option value"' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
+            input_element.append('<option value="' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
           } else {
             var group = $('<optgroup label="' + optgoup + '"></optgroup> ');
 
             Object.keys(self.events[effect.event].fields[field].options[optgoup]).forEach(option => {
-              var option_element = $('<option value"' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>');
+              var option_element = $('<option value="' + option + '">' + self.events[effect.event].fields[field].options[optgoup][option] + '</option>');
               if (effect[field] && effect[field] == option) {
                 option_element.attr('selected', 'selected')
               }
