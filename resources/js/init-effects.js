@@ -129,7 +129,7 @@ class PagedesignerEffectHandler {
         break;
 
       case 'select':
-        var input_element = $('<select></select>');
+        var input_element = $('<select><option value="">' + Drupal.t('Choose effect') + '</option></select>');
         self = this;
         Object.keys(self.events[effect.event].fields[field].options).forEach(optgoup => {
 
