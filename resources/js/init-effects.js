@@ -183,6 +183,12 @@ class PagedesignerEffectHandler {
             pagedesinger_effect_handler.init(editor.getSelected());
           }
         });
+        editor.on('component:selected', (component, sender) => {
+          if (drupalSettings && typeof drupalSettings.pagedesigner_effects != 'undefined') {
+            var pagedesinger_effect_handler = new PagedesignerEffectHandler(editor, jQuery, drupalSettings.pagedesigner_effects);
+            pagedesinger_effect_handler.init(editor.getSelected());
+          }
+        });
       });
 
       $(document).on('pagedesigner-init-components', function (e, editor, options) {
