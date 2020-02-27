@@ -25,7 +25,7 @@ class Effects extends CompoundHandlerBase {
   /**
    * {@inheritDoc}
    */
-  public function collectAttachments(&$attachments) {
+  public function collectAttachments(array &$attachments) {
     if (\Drupal::currentUser()->hasPermission('pd_effect_use')) {
       $config = \Drupal::config('pagedesigner_effects.settings');
       $attachments['drupalSettings']['pagedesigner_effects']['effects'] = YamlParser::parse(YamlSerializer::decode($config->get('enable_effects')));
@@ -36,7 +36,7 @@ class Effects extends CompoundHandlerBase {
   /**
    * {@inheritDoc}
    */
-  public function serialize(Element $entity, &$result = []) {
+  public function serialize(Element $entity, array &$result = []) {
     if (!$entity->field_effects->isEmpty()) {
       $result['effects'] = json_decode($entity->field_effects->value, TRUE);
     }
@@ -48,16 +48,21 @@ class Effects extends CompoundHandlerBase {
   /**
    * {@inheritDoc}
    */
-  public function get(Element $entity, &$result = '') {
+  public function get(Element $entity, string &$result = '') {
 
   }
 
   /**
    * {@inheritDoc}
    */
-  public function patch(Element $entity, $data) {
-    if (!empty($data['effects'])) {
-      $entity->field_effects->value = json_encode($data['effects']);
+  public function patch(Element $entity, array $data) {
+    if ($entity->hasField('field_effects')) {
+      if (!empty($data['effects'])) {
+        $entity->field_effects->value = json_encode($data['effects']);
+      }
+      else {
+        $entity->field_effects->value = '';
+      }
       $entity->save();
     }
   }
@@ -65,21 +70,21 @@ class Effects extends CompoundHandlerBase {
   /**
    * {@inheritDoc}
    */
-  public function renderForPublic(Element $entity, &$build = []) {
+  public function renderForPublic(Element $entity, array &$build = []) {
     $this->addEffects($entity, $build);
   }
 
   /**
    * {@inheritDoc}
    */
-  public function render(Element $entity, &$build = []) {
+  public function render(Element $entity, array &$build = []) {
     $this->addEffects($entity, $build);
   }
 
   /**
    * Add the user generated effects of the entity to drupalSettings.
    */
-  protected function addEffects(Element $entity, &$build = []) {
+  protected function addEffects(Element $entity, array &$build = []) {
     if (!$entity->hasField('field_effects') || $entity->field_effects->isEmpty()) {
       return;
     }
