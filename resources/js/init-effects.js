@@ -134,7 +134,11 @@ class PagedesignerEffectHandler {
         Object.keys(self.events[effect.event].fields[field].options).forEach(optgoup => {
 
           if (typeof self.events[effect.event].fields[field].options[optgoup] == 'string') {
-            input_element.append('<option value="' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
+            var option_element = $('<option value="' + optgoup + '">' + self.events[effect.event].fields[field].options[optgoup] + '</option>');
+            if (effect[field] && effect[field] == optgoup) {
+              option_element.attr('selected', 'selected')
+            }
+            input_element.append(option_element);
           } else {
             var group = $('<optgroup label="' + optgoup + '"></optgroup> ');
 
@@ -159,18 +163,10 @@ class PagedesignerEffectHandler {
     });
 
     field_holder.append(input_element);
-
     return field_holder;
-
-
   }
 
 }
-
-
-
-
-
 
 
 (function ($, Drupal) {
@@ -191,169 +187,36 @@ class PagedesignerEffectHandler {
         });
       });
 
+      // extend some component functions
       $(document).on('pagedesigner-init-components', function (e, editor, options) {
-
-        editor.DomComponents.addType('component', {
-          extend: 'component',
-          model: {
-            serialize() {
-              var styles = {};
-              if (this.get('entityId')) {
-                var selector = editor.SelectorManager.get('#pd-cp-' + this.get('entityId'));
-                if (selector) {
-                  editor.DeviceManager.getAll().forEach(function (device) {
-                    var style = false;
-                    if (device.get('widthMedia').length > 0) {
-                      style = editor.CssComposer.get(selector, null, '(max-width: ' + device.get('widthMedia') + ')')
-                    } else {
-                      style = editor.CssComposer.get(selector);
-                    }
-                    if (style) {
-                      styles[device.get('key')] = style.styleToString();
-                    }
-                  });
+        ['component', 'row'].forEach(function (cmp_type) {
+          editor.DomComponents.addType(cmp_type, {
+            extend: cmp_type,
+            model: {
+              serialize() {
+                var component_data = editor.DomComponents.getType('pd_base_element').model.prototype.serialize.apply(this, []);
+                if (this.attributes.effects) {
+                  component_data.effects = [...this.attributes.effects];
                 }
-              }
+                return component_data;
+              },
 
-              var component_data = {
-                fields: this.attributes.attributes,
-                styles: styles,
-                classes: this.getClasses()
-              };
-
-              if (this.attributes.effects) {
-                component_data.effects = [...this.attributes.effects];
-              }
-
-              return component_data;
-            },
-
-            handleLoadResponse(response) {
-              this.setAttributes(Object.assign({}, this.getAttributes(), response['fields']));
-              if (response['classes']) {
-                this.addClass(response['classes']);
-              }
-
-              if (response['effects']) {
-                this.attributes.effects = response['effects'];
-              }
-              this.set('previousVersion', Object.assign({}, this.serialize()));
-              this.set('changed', false);
-            },
-
-            restore() {
-
-              // needs some love
-              var previousData = this.get('previousVersion');
-              this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
-              this.removeClass(this.getClasses());
-
-              if (previousData['effects']) {
-                this.attributes.effects = previousData['effects'];
-              }
-
-              if (previousData['classes']) {
-                this.addClass(previousData['classes']);
-              }
-
-              for (var media in previousData['styles']) {
-                if (media == 'large') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style)
+              handleLoadResponse(response) {
+                editor.DomComponents.getType('pd_base_element').model.prototype.handleLoadResponse.apply(this, [response]);
+                if (response['effects']) {
+                  this.attributes.effects = response['effects'];
+                  this.attributes.previousVersion.effects = response['effects'];
                 }
-                if (media == 'medium') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 992px)" })
+              },
+
+              restore() {
+                editor.DomComponents.getType('pd_base_element').model.prototype.restore.apply(this, []);
+                if (this.get('previousVersion').effects) {
+                  this.attributes.effects = this.get('previousVersion').effects;
                 }
-                if (media == 'small') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 768px)" })
-                }
-              }
-              this.set('changed', false);
+              },
             }
-
-
-
-          }
-        })
-
-        editor.DomComponents.addType('row', {
-          extend: 'row',
-          model: {
-            serialize() {
-              var styles = {};
-              if (this.get('entityId')) {
-                var selector = editor.SelectorManager.get('#pd-cp-' + this.get('entityId'));
-                if (selector) {
-                  editor.DeviceManager.getAll().forEach(function (device) {
-                    var style = false;
-                    if (device.get('widthMedia').length > 0) {
-                      style = editor.CssComposer.get(selector, null, '(max-width: ' + device.get('widthMedia') + ')')
-                    } else {
-                      style = editor.CssComposer.get(selector);
-                    }
-                    if (style) {
-                      styles[device.get('key')] = style.styleToString();
-                    }
-                  });
-                }
-              }
-
-              var component_data = {
-                fields: this.attributes.attributes,
-                styles: styles,
-                classes: this.getClasses()
-              };
-
-              if (this.attributes.effects) {
-                component_data.effects = [...this.attributes.effects];
-              }
-
-              return component_data;
-
-            },
-
-            handleLoadResponse(response) {
-              this.setAttributes(Object.assign({}, this.getAttributes(), response['fields']));
-              if (response['classes']) {
-                this.addClass(response['classes']);
-              }
-
-              if (response['effects']) {
-                this.attributes.effects = response['effects'];
-              }
-              this.set('previousVersion', Object.assign({}, this.serialize()));
-              this.set('changed', false);
-            },
-
-            restore() {
-
-              // needs some love
-              var previousData = this.get('previousVersion');
-              this.setAttributes(Object.assign({}, this.getAttributes(), previousData['fields']));
-              this.removeClass(this.getClasses());
-
-              if (previousData['effects']) {
-                this.attributes.effects = previousData['effects'];
-              }
-
-              if (previousData['classes']) {
-                this.addClass(previousData['classes']);
-              }
-
-              for (var media in previousData['styles']) {
-                if (media == 'large') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style)
-                }
-                if (media == 'medium') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 992px)" })
-                }
-                if (media == 'small') {
-                  editor.CssComposer.setIdRule('pd-cp-' + this.get('entityId'), editor.Parser.parseCss('*{' + previousData['styles'][media] + '}')[0].style, { mediaText: "(max-width: 768px)" })
-                }
-              }
-              this.set('changed', false);
-            },
-
-          }
+          });
         });
       });
     }
