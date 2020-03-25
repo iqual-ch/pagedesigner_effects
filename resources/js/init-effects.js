@@ -92,11 +92,10 @@ class PagedesignerEffectHandler {
     self = this;
 
     var effect_form = $('<div class="edit-effect"></div>');
-    effect_form.append('<p><strong>' + effect.event + '</strong></p>');
+    effect_form.append('<p><strong>' + this.events[effect.event].label + '</strong></p>');
 
     var btn_remove_effect = $('<a class="btn-remove-effect"><i class="fas fa-times"></i></a>');
     effect_form.append(btn_remove_effect);
-
 
     btn_remove_effect.on('click', function () {
       component.attributes.effects.splice(component.attributes.effects.indexOf(effect), 1);
@@ -104,15 +103,12 @@ class PagedesignerEffectHandler {
       component.set('changed', true);
     });
 
-    effect_form.append('<p><a>' + effect.event + '</strong></p>');
     Object.keys(this.events[effect.event].fields).forEach(field => {
       effect_form.append(self.editEffectField(effect, field));
     });
 
     $('[data-effects-container]').append(effect_form);
   }
-
-
 
   editEffectField(effect, field) {
     var component = this.component;
@@ -129,7 +125,7 @@ class PagedesignerEffectHandler {
         break;
 
       case 'select':
-        var input_element = $('<select><option value="">' + Drupal.t('Choose effect') + '</option></select>');
+        var input_element = $('<select><option value="">' + Drupal.t('Choose option') + '</option></select>');
         self = this;
         Object.keys(self.events[effect.event].fields[field].options).forEach(optgoup => {
 
@@ -167,7 +163,6 @@ class PagedesignerEffectHandler {
   }
 
 }
-
 
 (function ($, Drupal) {
   Drupal.behaviors.pagedesigner_init_component_effects = {
