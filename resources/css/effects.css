@@ -8,7 +8,7 @@
 
 
 .pd-hover-grow {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -26,7 +26,7 @@
 }
 
 .pd-hover-shrink {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -65,7 +65,7 @@
 }
 
 .pd-hover-pulse {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -95,7 +95,7 @@
   }
 }
 .pd-hover-pulse-grow {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -128,7 +128,7 @@
   }
 }
 .pd-hover-pulse-shrink {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -149,7 +149,7 @@
 
 /* Bounce In */
 .pd-hover-bounce-in {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -166,7 +166,7 @@
 
 /* Bounce Out */
 .pd-hover-bounce-out {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -183,7 +183,7 @@
 
 /* Rotate */
 .pd-hover-rotate {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -200,7 +200,7 @@
 
 /* Grow Rotate */
 .pd-hover-grow-rotate {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -217,7 +217,7 @@
 
 /* Float */
 .pd-hover-float {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -236,7 +236,7 @@
 
 /* Sink */
 .pd-hover-sink {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -296,7 +296,7 @@
   }
 }
 .pd-hover-bob {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -361,7 +361,7 @@
   }
 }
 .pd-hover-hang {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -386,7 +386,7 @@
 
 /* Skew */
 .pd-hover-skew {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -403,7 +403,7 @@
 
 /* Skew Forward */
 .pd-hover-skew-forward {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -422,7 +422,7 @@
 
 /* Skew Backward */
 .pd-hover-skew-backward {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -462,7 +462,7 @@
 }
 
 .pd-hover-buzz {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -481,7 +481,7 @@
 
 /* Forward */
 .pd-hover-forward {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -498,7 +498,7 @@
 
 /* Backward */
 .pd-hover-backward {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: middle;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
