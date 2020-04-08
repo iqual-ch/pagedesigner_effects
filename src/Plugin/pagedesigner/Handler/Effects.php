@@ -3,9 +3,8 @@
 namespace Drupal\pagedesigner_effects\Plugin\pagedesigner\Handler;
 
 use Drupal\pagedesigner\Entity\Element;
-use Drupal\pagedesigner\Plugin\CompoundHandlerBase;
-use Symfony\Component\Yaml\Yaml as YamlParser;
-use Drupal\Component\Serialization\Yaml as YamlSerializer;
+use Drupal\pagedesigner\Plugin\pagedesigner\HandlerPluginInterface;
+use Drupal\ui_patterns\Definition\PatternDefinitionField;
 
 /**
  * Add effects functionality to "row" and "component" patterns.
@@ -20,7 +19,7 @@ use Drupal\Component\Serialization\Yaml as YamlSerializer;
  *   weight = 50
  * )
  */
-class Effects extends CompoundHandlerBase {
+class Effects implements HandlerPluginInterface {
 
   /**
    * {@inheritDoc}
@@ -43,13 +42,6 @@ class Effects extends CompoundHandlerBase {
     else {
       $result['effects'] = [];
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function get(Element $entity, string &$result = '') {
-
   }
 
   /**
@@ -85,7 +77,9 @@ class Effects extends CompoundHandlerBase {
    * Add the user generated effects of the entity to drupalSettings.
    */
   protected function addEffects(Element $entity, array &$build = []) {
-    if (!$entity->hasField('field_effects') || $entity->field_effects->isEmpty()) {
+    return;
+    // || $entity->field_effects->isEmpty()) {
+    if (!$entity->hasField('field_effects')) {
       return;
     }
     if (empty($build['#attached'])) {
@@ -102,6 +96,73 @@ class Effects extends CompoundHandlerBase {
     }
     $build['#attached']['drupalSettings']['pagedesigner']['effects']['#pd-cp-' . $entity->id()] = json_decode($entity->field_effects->value);
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function collectPatterns(array &$patterns) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function adaptPatterns(array &$patterns) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepare(PatternDefinitionField &$field, array &$fieldArray) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function describe(Element $entity, array &$result = []) {
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function get(Element $entity, string &$result = '') {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContent(Element $entity, array &$list = []) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function delete(Element $entity, bool $remove = FALSE) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function renderForEdit(Element $entity, array &$build = []) {}
+
+  /**
+   * {@inheritDoc}
+   */
+  public function generate($definition, array $data, Element &$entity = NULL) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function copy(Element $entity, Element $container = NULL, Element &$clone = NULL) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function publish(Element $entity) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unpublish(Element $entity) {
   }
 
 }
