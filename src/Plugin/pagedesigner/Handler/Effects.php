@@ -77,27 +77,30 @@ class Effects implements HandlerPluginInterface {
 
   /**
    * Add the user generated effects of the entity to drupalSettings.
+   *
+   * @param \Drupal\pagedesigner\Entity\Element $entity
+   *   The entity being rendered.
+   * @param array $build
+   *   The render array.
+   *
+   * @return void
    */
   protected function addEffects(Element $entity, array &$build = []) {
-    // return;
-    // || $entity->field_effects->isEmpty()) {
-    if (!$entity->hasField('field_effects')) {
-      return;
+    if ($entity->hasField('field_effects') && !$entity->field_effects->isEmpty()) {
+      if (empty($build['#attached'])) {
+        $build['#attached'] = [];
+      }
+      if (empty($build['#attached']['drupalSettings'])) {
+        $build['#attached']['drupalSettings'] = [];
+      }
+      if (empty($build['#attached']['drupalSettings']['pagedesigner'])) {
+        $build['#attached']['drupalSettings']['pagedesigner'] = [];
+      }
+      if (empty($build['#attached']['drupalSettings']['pagedesigner']['effects'])) {
+        $build['#attached']['drupalSettings']['pagedesigner']['effects'] = [];
+      }
+      $build['#attached']['drupalSettings']['pagedesigner']['effects']['#pd-cp-' . $entity->id()] = json_decode($entity->field_effects->value);
     }
-    if (empty($build['#attached'])) {
-      $build['#attached'] = [];
-    }
-    if (empty($build['#attached']['drupalSettings'])) {
-      $build['#attached']['drupalSettings'] = [];
-    }
-    if (empty($build['#attached']['drupalSettings']['pagedesigner'])) {
-      $build['#attached']['drupalSettings']['pagedesigner'] = [];
-    }
-    if (empty($build['#attached']['drupalSettings']['pagedesigner']['effects'])) {
-      $build['#attached']['drupalSettings']['pagedesigner']['effects'] = [];
-    }
-    $build['#attached']['drupalSettings']['pagedesigner']['effects']['#pd-cp-' . $entity->id()] = json_decode($entity->field_effects->value);
-
   }
 
   /**
