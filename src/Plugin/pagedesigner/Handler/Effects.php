@@ -5,6 +5,8 @@ namespace Drupal\pagedesigner_effects\Plugin\pagedesigner\Handler;
 use Drupal\pagedesigner\Entity\Element;
 use Drupal\pagedesigner\Plugin\pagedesigner\HandlerPluginInterface;
 use Drupal\ui_patterns\Definition\PatternDefinitionField;
+use Symfony\Component\Yaml\Yaml as YamlParser;
+use Drupal\Component\Serialization\Yaml as YamlSerializer;
 
 /**
  * Add effects functionality to "row" and "component" patterns.
@@ -77,7 +79,7 @@ class Effects implements HandlerPluginInterface {
    * Add the user generated effects of the entity to drupalSettings.
    */
   protected function addEffects(Element $entity, array &$build = []) {
-    return;
+    // return;
     // || $entity->field_effects->isEmpty()) {
     if (!$entity->hasField('field_effects')) {
       return;
