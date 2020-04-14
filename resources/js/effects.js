@@ -33,6 +33,34 @@
                     $(target).removeClass('animated ' + effect['effect']);
                   }, 1000);
                 });
+
+                // state before
+                switch (effect['state_before']) {
+                  case 'hide':
+                    $(target).addClass('pd-hidden');
+                    break;
+
+                  case 'show':
+                    $(target).removeClass('pd-hidden');
+                    break;
+                }
+
+                // state after
+                switch (effect['state_after']) {
+                  case 'hide':
+                    $(trigger).click(function () {
+                      $(target).addClass('pd-hidden');
+                      $(target).removeClass('animated');
+                    });
+                    break;
+
+                  case 'show':
+                    $(trigger).click(function () {
+                      $(target).removeClass('pd-hidden');
+                    });
+                    break;
+                }
+
                 break;
 
               case 'mouseleave':
@@ -42,6 +70,34 @@
                     $(target).removeClass('animated ' + effect['effect']);
                   }, 1000);
                 });
+
+                // state before
+                switch (effect['state_before']) {
+                  case 'hide':
+                    $(target).addClass('pd-hidden');
+                    break;
+
+                  case 'show':
+                    $(target).removeClass('pd-hidden');
+                    break;
+                }
+
+                // state after
+                switch (effect['state_after']) {
+                  case 'hide':
+                    $(trigger).click(function () {
+                      $(target).addClass('pd-hidden');
+                      $(target).removeClass('animated');
+                    });
+                    break;
+
+                  case 'show':
+                    $(trigger).click(function () {
+                      $(target).removeClass('pd-hidden');
+                    });
+                    break;
+                }
+
                 break;
 
               case 'mousehover':
@@ -54,8 +110,45 @@
                 });
                 break;
 
+              case 'click':
+                $(trigger).addClass('pd-clickable');
+                $(trigger).click(function () {
+                  if (effect['effect']) {
+                    $(target).addClass('animated ' + effect['effect']);
+                    setTimeout(function () {
+                      $(target).removeClass('animated ' + effect['effect']);
+                    }, 1000);
+                  }
+                });
 
+                // state before
+                switch (effect['state_before']) {
+                  case 'hide':
+                    $(target).addClass('pd-hidden');
+                    break;
 
+                  case 'show':
+                    $(target).removeClass('pd-hidden');
+                    break;
+                }
+
+                // state after
+                switch (effect['state_after']) {
+                  case 'hide':
+                    $(trigger).click(function () {
+                      $(target).addClass('pd-hidden');
+                      $(target).removeClass('animated');
+                    });
+                    break;
+
+                  case 'show':
+                    $(trigger).click(function () {
+                      $(target).removeClass('pd-hidden');
+                    });
+                    break;
+                }
+
+                break;
 
               case 'scrollentertop':
               case 'scrollleavetop':
@@ -74,7 +167,7 @@
                     });
                     break;
 
-                  case 'hide':
+                  case 'show':
                     scene.on('add', function (event) {
                       $(target).removeClass('pd-hidden');
                     });
@@ -311,10 +404,6 @@
                   //              .addIndicators()
                   .setTween(TL)
                   .addTo(animationController);
-
-
-
-
 
                 break;
 

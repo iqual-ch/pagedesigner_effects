@@ -1,8 +1,7 @@
 class PagedesignerEffectHandler {
 
   /**
-   * Construct a new Pagedesigner Media Manager.
-   * Also, initializes the default media trait.
+   * Construct a pagedesigner Effect Manager.
    *
    * @param {Object} editor
    * @param {Object} jQuery
@@ -12,12 +11,9 @@ class PagedesignerEffectHandler {
     this.editor = editor;
     this.jQuery = jQuery;
     this.settings = settings;
-
     $ = this.jQuery;
     this.component = {};
-
     this.events = this.loadEvents();
-
   }
 
   loadEvents() {
@@ -25,8 +21,6 @@ class PagedesignerEffectHandler {
     var effects = this.settings.effects;
     if (effects && typeof effects == 'object') {
       Object.keys(effects.categories).forEach(category => {
-        //effects.categories[category].events.forEach( element =>{
-
         Object.keys(effects.categories[category].events).forEach(element => {
           events[element] = {
             'label': effects.categories[category].events[element],
