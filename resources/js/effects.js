@@ -48,14 +48,14 @@
                 // state after
                 switch (effect['state_after']) {
                   case 'hide':
-                    $(trigger).click(function () {
+                    $(trigger).mouseenter(function () {
                       $(target).addClass('pd-hidden');
                       $(target).removeClass('animated');
                     });
                     break;
 
                   case 'show':
-                    $(trigger).click(function () {
+                    $(trigger).mouseenter(function () {
                       $(target).removeClass('pd-hidden');
                     });
                     break;
@@ -85,14 +85,14 @@
                 // state after
                 switch (effect['state_after']) {
                   case 'hide':
-                    $(trigger).click(function () {
+                    $(trigger).mouseleave(function () {
                       $(target).addClass('pd-hidden');
                       $(target).removeClass('animated');
                     });
                     break;
 
                   case 'show':
-                    $(trigger).click(function () {
+                    $(trigger).mouseleave(function () {
                       $(target).removeClass('pd-hidden');
                     });
                     break;
