@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Update hooks for pagedesigner_effects module.
+ */
+
+ /**
+ * Reinstall default config
+ */
+function pagedesigner_effects_update_8001() {
+  \Drupal::service('config.installer')->installDefaultConfig('module', 'pagedesigner_effects');
+}

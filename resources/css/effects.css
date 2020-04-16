@@ -6,6 +6,9 @@
   visibility: visible;
 }
 
+.pd-clickable{
+  cursor: pointer;
+}
 
 .pd-hover-grow {
   /* display: inline-block; */
