@@ -106,17 +106,20 @@ class Effects implements HandlerPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function collectPatterns(array &$patterns) {}
+  public function collectPatterns(array &$patterns) {
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function adaptPatterns(array &$patterns) {}
+  public function adaptPatterns(array &$patterns) {
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function prepare(PatternDefinitionField &$field, array &$fieldArray) {}
+  public function prepare(PatternDefinitionField &$field, array &$fieldArray) {
+  }
 
   /**
    * {@inheritdoc}
@@ -139,12 +142,19 @@ class Effects implements HandlerPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function delete(Element $entity, bool $remove = FALSE) {}
+  public function delete(Element $entity, bool $remove = FALSE) {
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function renderForEdit(Element $entity, array &$build = []) {}
+  public function restore(Element $entity) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function renderForEdit(Element $entity, array &$build = []) {
+  }
 
   /**
    * {@inheritDoc}
