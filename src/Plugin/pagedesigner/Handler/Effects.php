@@ -136,7 +136,7 @@ class Effects implements HandlerPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getContent(Element $entity, array &$list = []) {
+  public function getContent(Element $entity, array &$list = [], $published = TRUE) {
   }
 
   /**

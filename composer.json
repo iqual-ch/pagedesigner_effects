@@ -13,6 +13,6 @@
   },
   "license": "GPL-2.0+",
   "require": {
-    "drupal/pagedesigner": "^2.0"
+    "drupal/pagedesigner": "^2.0.0-beta2"
   }
 }
