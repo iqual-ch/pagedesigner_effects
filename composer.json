@@ -1,7 +1,7 @@
 {
-  "name": "iqual/pagedesigner_effects",
+  "name": "drupal/pagedesigner_effects",
   "description": "An effect extension for the pagedesigner contrib module.",
-  "type": "drupal-custom-module",
+  "type": "drupal-module",
   "keywords": [
     "Drupal",
     "Editing"
